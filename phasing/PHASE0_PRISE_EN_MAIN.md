@@ -1,4 +1,4 @@
-# Prise en main de l'environnement CarRacing-v2
+# Prise en main de l'environnement CarRacing-v3
 ## NRLE822 · Projet fil rouge · Séance d'introduction
 
 > **Module** NRLE822 · S8 &nbsp;|&nbsp; **Durée** 1h &nbsp;|&nbsp; **Niveau** Débutant  
@@ -13,7 +13,7 @@
 
 - installer et vérifier l'environnement de travail (Gymnasium, PyTorch) ;
 - comprendre le cycle fondamental `observation → action → récompense → nouvel état` ;
-- inspecter les espaces d'observation et d'action de CarRacing-v2 ;
+- inspecter les espaces d'observation et d'action de CarRacing-v3 ;
 - visualiser ce que « voit » la voiture à chaque pas de temps ;
 - exécuter un agent aléatoire et mesurer son score ;
 - produire une vidéo MP4 d'un épisode sur Google Colab.
@@ -70,12 +70,12 @@ print(f'PyTorch   : {torch.__version__}')
 
 ## 3. Création de l'environnement et exploration des espaces
 
-CarRacing-v2 expose deux objets importants que vous retrouverez dans toutes les phases du projet.
+CarRacing-v3 expose deux objets importants que vous retrouverez dans toutes les phases du projet.
 
 ```python
 # render_mode="rgb_array" : l'environnement retourne les frames en mémoire
 # Ne jamais utiliser render_mode="human" sur Colab ni pendant l'entraînement
-env = gym.make('CarRacing-v2', render_mode='rgb_array', continuous=True)
+env = gym.make('CarRacing-v3', render_mode='rgb_array', continuous=True)
 
 obs, info = env.reset(seed=SEED)
 
@@ -103,7 +103,7 @@ env.close()
 L'agent ne reçoit ni la vitesse, ni la position GPS, ni l'angle du volant. Il ne perçoit que cette image de 96 × 96 pixels — exactement comme un conducteur humain dans un jeu vidéo.
 
 ```python
-env = gym.make('CarRacing-v2', render_mode='rgb_array', continuous=True)
+env = gym.make('CarRacing-v3', render_mode='rgb_array', continuous=True)
 obs, info = env.reset(seed=SEED)
 
 # Avancer de quelques steps pour sortir de l'animation de démarrage
@@ -143,7 +143,7 @@ env.close()
 Voici la boucle de base que vous retrouverez dans toutes les phases du projet. Chaque itération est appelée un **pas de temps** (step).
 
 ```python
-env = gym.make('CarRacing-v2', render_mode='rgb_array', continuous=True)
+env = gym.make('CarRacing-v3', render_mode='rgb_array', continuous=True)
 obs, info = env.reset(seed=SEED)
 
 print(f'{"Step":>4}  {"Action":^32}  {"Reward":>8}  {"Cum. reward":>12}')
@@ -185,7 +185,7 @@ actions_predefinies = {
     'Inaction'              : np.array([ 0.0, 0.0, 0.0], dtype=np.float32),
 }
 
-env = gym.make('CarRacing-v2', render_mode='rgb_array', continuous=True)
+env = gym.make('CarRacing-v3', render_mode='rgb_array', continuous=True)
 obs, _ = env.reset(seed=SEED)
 
 # Avancer légèrement pour voir la route
@@ -238,7 +238,7 @@ Un agent qui choisit ses actions au hasard sert de **baseline** : tout modèle a
 ```python
 os.makedirs('videos/random_agent', exist_ok=True)
 
-env = gym.make('CarRacing-v2', render_mode='rgb_array', continuous=True)
+env = gym.make('CarRacing-v3', render_mode='rgb_array', continuous=True)
 env = RecordVideo(
     env,
     video_folder='videos/random_agent',
@@ -301,7 +301,7 @@ Un seul épisode ne suffit pas : les circuits de CarRacing-v2 sont générés al
 ```python
 def run_episode(seed: int = None, max_steps: int = 1000) -> float:
     """Exécute un épisode avec un agent aléatoire et retourne le score total."""
-    env = gym.make('CarRacing-v2', render_mode='rgb_array', continuous=True)
+    env = gym.make('CarRacing-v3', render_mode='rgb_array', continuous=True)
     obs, _ = env.reset(seed=seed)
     total = 0.0
     for _ in range(max_steps):
